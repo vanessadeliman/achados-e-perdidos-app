@@ -1,3 +1,6 @@
+import 'package:achados_e_perdidos/pages/home/tabs/cadastro_item_tab.dart';
+import 'package:achados_e_perdidos/pages/home/tabs/config_tab.dart';
+import 'package:achados_e_perdidos/pages/home/tabs/feed_tab.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -7,21 +10,36 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
+  int index = 0;
+  late TabController controller;
+  @override
+  void initState() {
+    controller = TabController(length: 3, initialIndex: index, vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home'), actions: [
-         
-        
-        
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: index,
+        onTap:
+            (value) => setState(() {
+              index = value;
+              controller.animateTo(value);
+            }),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Início'),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Adicionar'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
-      body: RefreshIndicator(onRefresh: refresh, child: ListView()),
-    );
-  }
 
-  Future<void> refresh() async {
-    setState(() {});
+      body: TabBarView(
+        controller: controller,
+        children: [FeedTab(), CadastroItemTab(), ConfigTab()],
+      ),
+    );
   }
 }
