@@ -26,11 +26,13 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
 
       Map<String, String> headers = {
         'Authorization': 'Basic $base64Credentials',
+        'Content-Type': 'application/json',
       };
 
-      final response = await cliente.get(
+      final response = await cliente.post(
         Uri.parse('https://ifce-achados.onrender.com/auth/login'),
         headers: headers,
+        body: jsonEncode({"email": event.email, "password": event.senha}),
       );
 
       if (response.statusCode == 200) {
@@ -63,6 +65,8 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       sessaoAtiva.instituicao = event.instituicao;
       sessaoAtiva.lembrar = event.lembrar;
       sessaoAtiva.email = event.email;
+      sessaoAtiva.matricula = event.matricula;
+      sessaoAtiva.senha = event.senha;
 
       final response = await cliente.post(
         Uri.parse('https://ifce-achados.onrender.com/auth/registro'),
@@ -72,7 +76,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
 
       if (response.statusCode == 200) {
         final map = jsonDecode(response.body);
-        sessaoAtiva.token = map["AcessToken"];
+        sessaoAtiva.token = map["token"] ?? '';
         SharedPreferences cache = await SharedPreferences.getInstance();
         await cache.setString('sessaoAtiva', sessaoAtiva.toJson());
         emit(SucessoState());

@@ -17,7 +17,7 @@ class CadastroPage extends StatefulWidget {
 class _CadastroPageState extends State<CadastroPage> {
   final TextEditingController email = TextEditingController();
   final TextEditingController senha = TextEditingController();
-  final TextEditingController cargo = TextEditingController();
+  final TextEditingController matricula = TextEditingController();
   final TextEditingController instituicao = TextEditingController();
   final TextEditingController nome = TextEditingController();
   final TextEditingController confirmaSenha = TextEditingController();
@@ -99,7 +99,7 @@ class _CadastroPageState extends State<CadastroPage> {
                   keyboardType: TextInputType.name,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) => Mask.validations
-                      .generic(value, error: 'Informe o seu nome'),
+                      .generic(value, error: 'Informe o nome da sua instituição'),
                   controller: instituicao,
                   decoration: const InputDecoration(
                       alignLabelWithHint: true,
@@ -108,15 +108,15 @@ class _CadastroPageState extends State<CadastroPage> {
                 ),
                 TextFormField(
                   enabled: state is! CarregandoState,
-                  keyboardType: TextInputType.name,
+                  keyboardType: TextInputType.number,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) => Mask.validations
-                      .generic(value, error: 'Informe o seu nome'),
-                  controller: cargo,
+                      .generic(value, error: 'Informe a sua matricula'),
+                  controller: matricula,
                   decoration: const InputDecoration(
                       alignLabelWithHint: true,
-                      labelText: 'Cargo',
-                      hintText: 'Estudante, Funcionario...'),
+                      labelText: 'Matricula',
+                      hintText: '0000000000000000'),
                 ),
                 TextFormField(
                   enabled: state is! CarregandoState,
@@ -198,6 +198,7 @@ class _CadastroPageState extends State<CadastroPage> {
                                               email: email.text,
                                               senha: senha.text,
                                               instituicao: instituicao.text,
+                                              matricula: matricula.text,
                                               nome: nome.text,
                                               lembrar: lembrar));
                                     }

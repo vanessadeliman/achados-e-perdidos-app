@@ -8,6 +8,7 @@ class Sessao {
   String id;
   Role direitos;
   String instituicao;
+  String matricula;
   String nome;
   String senha;
   String email;
@@ -15,6 +16,7 @@ class Sessao {
   Sessao({
     this.id = '',
     this.token = '',
+    this.matricula = '',
     this.direitos = Role.user,
     this.instituicao = '',
     this.nome = '',
@@ -22,22 +24,6 @@ class Sessao {
     this.email = '',
     this.lembrar = false,
   });
-
-  Sessao copyWith({
-    String? token,
-    Role? direitos,
-    String? instituicao,
-    String? nome,
-    String? email,
-  }) {
-    return Sessao(
-      token: token ?? this.token,
-      direitos: direitos ?? this.direitos,
-      instituicao: instituicao ?? this.instituicao,
-      nome: nome ?? this.nome,
-      email: email ?? this.email,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -48,6 +34,7 @@ class Sessao {
       'name': nome,
       'lembrar': lembrar,
       'password': senha,
+      'matricula':matricula
     };
   }
 
@@ -63,7 +50,8 @@ class Sessao {
       instituicao: user['instituicao'] ?? '',
       nome: user['name'] ?? '',
       lembrar: user['lembrar'] ?? false,
-      senha: user['senha'] ?? '',
+      senha: user['password'] ?? '',
+      matricula: user['matricula'] ?? '',
     );
   }
 
