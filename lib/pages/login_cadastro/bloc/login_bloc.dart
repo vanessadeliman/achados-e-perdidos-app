@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:achados_e_perdidos/pages/login_cadastro/bloc/state_events_login.dart';
 import 'package:achados_e_perdidos/modelos/sessao.dart';
 import 'package:achados_e_perdidos/services/interceptor.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,24 +16,6 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
   LoginBloc(this.sessaoAtiva) : super(InitState()) {
     on<LogarEvent>(_login);
     on<CadastrarEvent>(_cadastro);
-    on<AtualizaConexao>((event, emit) async {
-      try {
-        await cliente.get(Uri.parse('http://${event.ip}:${event.porta}/teste'));
-        sessaoAtiva.ip = event.ip;
-        sessaoAtiva.porta = event.porta;
-        event.callback();
-      } catch (e) {
-        if (e is ClientException) {
-          ScaffoldMessenger.of(event.context).showSnackBar(
-            const SnackBar(content: Text('Dados de conexão inválidos.')),
-          );
-        } else {
-          ScaffoldMessenger.of(
-            event.context,
-          ).showSnackBar(const SnackBar(content: Text('Ocorreu um erro')));
-        }
-      }
-    });
   }
 
   FutureOr<void> _login(LogarEvent event, emit) async {
@@ -48,7 +29,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       };
 
       final response = await cliente.get(
-        Uri.parse('${sessaoAtiva.path}login'),
+        Uri.parse('https://ifce-achados.onrender.com/auth/login'),
         headers: headers,
       );
 
@@ -79,15 +60,14 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       };
 
       sessaoAtiva.nome = event.nome;
-      sessaoAtiva.cargo = event.cargo;
       sessaoAtiva.instituicao = event.instituicao;
       sessaoAtiva.lembrar = event.lembrar;
       sessaoAtiva.email = event.email;
 
       final response = await cliente.post(
-        Uri.parse('${sessaoAtiva.path}cadastro'),
+        Uri.parse('https://ifce-achados.onrender.com/auth/registro'),
         headers: headers,
-        body: jsonEncode(sessaoAtiva.toMapNovoCadastro()),
+        body: jsonEncode(sessaoAtiva.toMap()),
       );
 
       if (response.statusCode == 200) {

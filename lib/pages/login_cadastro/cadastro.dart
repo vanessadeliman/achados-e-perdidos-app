@@ -197,7 +197,6 @@ class _CadastroPageState extends State<CadastroPage> {
                                           CadastrarEvent(
                                               email: email.text,
                                               senha: senha.text,
-                                              cargo: cargo.text,
                                               instituicao: instituicao.text,
                                               nome: nome.text,
                                               lembrar: lembrar));
