@@ -8,13 +8,47 @@ class Sessao {
   String id;
   Role direitos;
   String instituicao;
+  String matricula;
   String nome;
   String senha;
   String email;
   bool lembrar;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'token': token,
+      'id': id,
+      'direitos': direitos.name,
+      'instituicao': instituicao,
+      'matricula': matricula,
+      'nome': nome,
+      'senha': senha,
+      'email': email,
+      'lembrar': lembrar,
+    };
+  }
+
+  factory Sessao.fromMapCache(Map<String, dynamic> map) {
+    return Sessao(
+      token: map['token'] ?? '',
+      id: map['id'] ?? '',
+      direitos: Role.values.firstWhere(
+        (test) => test.name == (map['direitos']),
+        orElse: () => Role.user,
+      ),
+      instituicao: map['instituicao'] ?? '',
+      matricula: map['matricula'] ?? '',
+      nome: map['nome'] ?? '',
+      senha: map['senha'] ?? '',
+      email: map['email'] ?? '',
+      lembrar: map['lembrar'] ?? false,
+    );
+  }
+
   Sessao({
     this.id = '',
     this.token = '',
+    this.matricula = '',
     this.direitos = Role.user,
     this.instituicao = '',
     this.nome = '',
@@ -22,34 +56,6 @@ class Sessao {
     this.email = '',
     this.lembrar = false,
   });
-
-  Sessao copyWith({
-    String? token,
-    Role? direitos,
-    String? instituicao,
-    String? nome,
-    String? email,
-  }) {
-    return Sessao(
-      token: token ?? this.token,
-      direitos: direitos ?? this.direitos,
-      instituicao: instituicao ?? this.instituicao,
-      nome: nome ?? this.nome,
-      email: email ?? this.email,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'token': token,
-      'role': direitos.name,
-      'email': email,
-      'instituicao': instituicao,
-      'name': nome,
-      'lembrar': lembrar,
-      'password': senha,
-    };
-  }
 
   factory Sessao.fromMap(Map<String, dynamic> map) {
     final user = map['user'];
@@ -63,12 +69,13 @@ class Sessao {
       instituicao: user['instituicao'] ?? '',
       nome: user['name'] ?? '',
       lembrar: user['lembrar'] ?? false,
-      senha: user['senha'] ?? '',
+      senha: user['password'] ?? '',
+      matricula: user['matricula'] ?? '',
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory Sessao.fromJson(String source) =>
-      Sessao.fromMap(json.decode(source) as Map<String, dynamic>);
+      Sessao.fromMapCache(json.decode(source) as Map<String, dynamic>);
 }

@@ -1,4 +1,3 @@
-
 abstract class LoginState {}
 
 class InitState extends LoginState {}
@@ -27,10 +26,13 @@ class CadastrarEvent extends LoginEvents {
   final String instituicao;
   final String nome;
   final bool lembrar;
-  CadastrarEvent(
-      {required this.email,
-      required this.senha,
-      required this.instituicao,
-      required this.nome,
-      required this.lembrar});
+  final String matricula;
+  CadastrarEvent({
+    required this.matricula,
+    required this.email,
+    required this.senha,
+    required this.instituicao,
+    required this.nome,
+    required this.lembrar,
+  });
 }
