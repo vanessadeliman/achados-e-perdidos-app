@@ -13,6 +13,38 @@ class Sessao {
   String senha;
   String email;
   bool lembrar;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'token': token,
+      'id': id,
+      'direitos': direitos.name,
+      'instituicao': instituicao,
+      'matricula': matricula,
+      'nome': nome,
+      'senha': senha,
+      'email': email,
+      'lembrar': lembrar,
+    };
+  }
+
+  factory Sessao.fromMapCache(Map<String, dynamic> map) {
+    return Sessao(
+      token: map['token'] ?? '',
+      id: map['id'] ?? '',
+      direitos: Role.values.firstWhere(
+        (test) => test.name == (map['direitos']),
+        orElse: () => Role.user,
+      ),
+      instituicao: map['instituicao'] ?? '',
+      matricula: map['matricula'] ?? '',
+      nome: map['nome'] ?? '',
+      senha: map['senha'] ?? '',
+      email: map['email'] ?? '',
+      lembrar: map['lembrar'] ?? false,
+    );
+  }
+
   Sessao({
     this.id = '',
     this.token = '',
@@ -24,19 +56,6 @@ class Sessao {
     this.email = '',
     this.lembrar = false,
   });
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'token': token,
-      'role': direitos.name,
-      'email': email,
-      'instituicao': instituicao,
-      'name': nome,
-      'lembrar': lembrar,
-      'password': senha,
-      'matricula':matricula
-    };
-  }
 
   factory Sessao.fromMap(Map<String, dynamic> map) {
     final user = map['user'];
@@ -58,5 +77,5 @@ class Sessao {
   String toJson() => json.encode(toMap());
 
   factory Sessao.fromJson(String source) =>
-      Sessao.fromMap(json.decode(source) as Map<String, dynamic>);
+      Sessao.fromMapCache(json.decode(source) as Map<String, dynamic>);
 }

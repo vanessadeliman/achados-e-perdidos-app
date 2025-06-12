@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask/mask/mask.dart';
 
 class Login extends StatefulWidget {
-  const Login( {super.key});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -43,29 +43,37 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
-        actions: [
-        
-        ],
+        actions: [],
         leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) {
-                return BemVindoPage();
-              }));
-            },
-            icon: const Icon(Icons.arrow_back)),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return BemVindoPage();
+                },
+              ),
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is SucessoState) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) {
-              return Home();
-            }));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return HomeProvider();
+                },
+              ),
+            );
           }
           if (state is ErroState) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.erro)));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.erro)));
           }
         },
         builder: (context, state) {
@@ -93,27 +101,32 @@ class _LoginState extends State<Login> {
                       validator: (value) => Mask.validations.email(value),
                       controller: email,
                       decoration: const InputDecoration(
-                          alignLabelWithHint: true,
-                          labelText: 'E-mail',
-                          hintText: 'exemplo@exemplo.com'),
+                        alignLabelWithHint: true,
+                        labelText: 'E-mail',
+                        hintText: 'exemplo@exemplo.com',
+                      ),
                     ),
                     TextFormField(
                       enabled: state is! CarregandoState,
                       validator: validacao,
                       controller: senha,
                       decoration: InputDecoration(
-                          labelText: 'Senha',
-                          hintText: 'Digite sua senha',
-                          alignLabelWithHint: true,
-                          suffix: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  mostrarSenha = !mostrarSenha;
-                                });
-                              },
-                              icon: Icon(mostrarSenha
-                                  ? Icons.visibility_off
-                                  : Icons.visibility))),
+                        labelText: 'Senha',
+                        hintText: 'Digite sua senha',
+                        alignLabelWithHint: true,
+                        suffix: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              mostrarSenha = !mostrarSenha;
+                            });
+                          },
+                          icon: Icon(
+                            mostrarSenha
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                      ),
                       obscureText: !mostrarSenha,
                     ),
                     const SizedBox(height: 10),
@@ -130,27 +143,34 @@ class _LoginState extends State<Login> {
                     Row(
                       children: [
                         Expanded(
-                            child: FilledButton(
-                                style: ButtonStyle(
-                                  shape: WidgetStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
+                          child: FilledButton(
+                            style: ButtonStyle(
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                onPressed: state is CarregandoState
+                              ),
+                            ),
+                            onPressed:
+                                state is CarregandoState
                                     ? null
                                     : () {
-                                        if (form.currentState!.validate()) {
-                                          context.read<LoginBloc>().add(
-                                              LogarEvent(email.text, senha.text,
-                                                  lembrar));
-                                        }
-                                      },
-                                child: const Text(
-                                  'Entrar',
-                                  style: TextStyle(height: 5),
-                                ))),
+                                      if (form.currentState!.validate()) {
+                                        context.read<LoginBloc>().add(
+                                          LogarEvent(
+                                            email.text,
+                                            senha.text,
+                                            lembrar,
+                                          ),
+                                        );
+                                      }
+                                    },
+                            child: const Text(
+                              'Entrar',
+                              style: TextStyle(height: 5),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],

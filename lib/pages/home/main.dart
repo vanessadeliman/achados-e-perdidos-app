@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             primary: Color(0xFFFF991F),
           ),
         ),
-        home: const Home(),
+        home: const HomeProvider(),
       ),
     );
   }

@@ -30,7 +30,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       };
 
       final response = await cliente.post(
-        Uri.parse('https://ifce-achados.onrender.com/auth/login'),
+        Uri.parse('https://ifce-achados.onrender.com/api/auth/login'),
         headers: headers,
         body: jsonEncode({"email": event.email, "password": event.senha}),
       );
@@ -69,7 +69,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       sessaoAtiva.senha = event.senha;
 
       final response = await cliente.post(
-        Uri.parse('https://ifce-achados.onrender.com/auth/registro'),
+        Uri.parse('https://ifce-achados.onrender.com/api/auth/registro'),
         headers: headers,
         body: jsonEncode(sessaoAtiva.toMap()),
       );

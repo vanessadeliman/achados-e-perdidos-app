@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask/mask/mask.dart';
 
 class CadastroPage extends StatefulWidget {
-  const CadastroPage( {super.key});
+  const CadastroPage({super.key});
 
   @override
   State<CadastroPage> createState() => _CadastroPageState();
@@ -42,29 +42,37 @@ class _CadastroPageState extends State<CadastroPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) {
-                return BemVindoPage();
-              }));
-            },
-            icon: const Icon(Icons.arrow_back)),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return BemVindoPage();
+                },
+              ),
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         toolbarHeight: 60,
-        actions: [
-          
-        ],
+        actions: [],
       ),
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is SucessoState) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) {
-              return Home();
-            }));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return HomeProvider();
+                },
+              ),
+            );
           }
           if (state is ErroState) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.erro)));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.erro)));
           }
         },
         builder: (context, state) {
@@ -86,37 +94,49 @@ class _CadastroPageState extends State<CadastroPage> {
                   enabled: state is! CarregandoState,
                   keyboardType: TextInputType.name,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) => Mask.validations
-                      .generic(value, error: 'Informe o seu nome'),
+                  validator:
+                      (value) => Mask.validations.generic(
+                        value,
+                        error: 'Informe o seu nome',
+                      ),
                   controller: nome,
                   decoration: const InputDecoration(
-                      alignLabelWithHint: true,
-                      labelText: 'Nome',
-                      hintText: 'Digite seu nome'),
+                    alignLabelWithHint: true,
+                    labelText: 'Nome',
+                    hintText: 'Digite seu nome',
+                  ),
                 ),
                 TextFormField(
                   enabled: state is! CarregandoState,
                   keyboardType: TextInputType.name,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) => Mask.validations
-                      .generic(value, error: 'Informe o nome da sua instituição'),
+                  validator:
+                      (value) => Mask.validations.generic(
+                        value,
+                        error: 'Informe o nome da sua instituição',
+                      ),
                   controller: instituicao,
                   decoration: const InputDecoration(
-                      alignLabelWithHint: true,
-                      labelText: 'Instituição',
-                      hintText: 'Digite o nome da sua instituição'),
+                    alignLabelWithHint: true,
+                    labelText: 'Instituição',
+                    hintText: 'Digite o nome da sua instituição',
+                  ),
                 ),
                 TextFormField(
                   enabled: state is! CarregandoState,
                   keyboardType: TextInputType.number,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) => Mask.validations
-                      .generic(value, error: 'Informe a sua matricula'),
+                  validator:
+                      (value) => Mask.validations.generic(
+                        value,
+                        error: 'Informe a sua matricula',
+                      ),
                   controller: matricula,
                   decoration: const InputDecoration(
-                      alignLabelWithHint: true,
-                      labelText: 'Matricula',
-                      hintText: '0000000000000000'),
+                    alignLabelWithHint: true,
+                    labelText: 'Matricula',
+                    hintText: '0000000000000000',
+                  ),
                 ),
                 TextFormField(
                   enabled: state is! CarregandoState,
@@ -125,27 +145,30 @@ class _CadastroPageState extends State<CadastroPage> {
                   validator: (value) => Mask.validations.email(value),
                   controller: email,
                   decoration: const InputDecoration(
-                      alignLabelWithHint: true,
-                      labelText: 'E-mail',
-                      hintText: 'exemplo@exemplo.com'),
+                    alignLabelWithHint: true,
+                    labelText: 'E-mail',
+                    hintText: 'exemplo@exemplo.com',
+                  ),
                 ),
                 TextFormField(
                   enabled: state is! CarregandoState,
                   validator: validacao,
                   controller: senha,
                   decoration: InputDecoration(
-                      labelText: 'Senha',
-                      hintText: 'Digite sua senha',
-                      alignLabelWithHint: true,
-                      suffix: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              mostrarSenha = !mostrarSenha;
-                            });
-                          },
-                          icon: Icon(mostrarSenha
-                              ? Icons.visibility_off
-                              : Icons.visibility))),
+                    labelText: 'Senha',
+                    hintText: 'Digite sua senha',
+                    alignLabelWithHint: true,
+                    suffix: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          mostrarSenha = !mostrarSenha;
+                        });
+                      },
+                      icon: Icon(
+                        mostrarSenha ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    ),
+                  ),
                   obscureText: !mostrarSenha,
                 ),
                 TextFormField(
@@ -153,18 +176,22 @@ class _CadastroPageState extends State<CadastroPage> {
                   validator: validacao,
                   controller: confirmaSenha,
                   decoration: InputDecoration(
-                      labelText: 'Confirmar senha',
-                      hintText: 'Digite novamente sua senha',
-                      alignLabelWithHint: true,
-                      suffix: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              mostrarSenhaConfirma = !mostrarSenhaConfirma;
-                            });
-                          },
-                          icon: Icon(mostrarSenhaConfirma
-                              ? Icons.visibility_off
-                              : Icons.visibility))),
+                    labelText: 'Confirmar senha',
+                    hintText: 'Digite novamente sua senha',
+                    alignLabelWithHint: true,
+                    suffix: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          mostrarSenhaConfirma = !mostrarSenhaConfirma;
+                        });
+                      },
+                      icon: Icon(
+                        mostrarSenhaConfirma
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                    ),
+                  ),
                   obscureText: !mostrarSenhaConfirma,
                 ),
                 const SizedBox(height: 10),
@@ -181,32 +208,37 @@ class _CadastroPageState extends State<CadastroPage> {
                 Row(
                   children: [
                     Expanded(
-                        child: FilledButton(
-                            style: ButtonStyle(
-                              shape: WidgetStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
+                      child: FilledButton(
+                        style: ButtonStyle(
+                          shape: WidgetStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            onPressed: state is CarregandoState
+                          ),
+                        ),
+                        onPressed:
+                            state is CarregandoState
                                 ? null
                                 : () {
-                                    if (form.currentState!.validate()) {
-                                      context.read<LoginBloc>().add(
-                                          CadastrarEvent(
-                                              email: email.text,
-                                              senha: senha.text,
-                                              instituicao: instituicao.text,
-                                              matricula: matricula.text,
-                                              nome: nome.text,
-                                              lembrar: lembrar));
-                                    }
-                                  },
-                            child: const Text(
-                              'Cadastrar-se',
-                              style: TextStyle(height: 5),
-                            ))),
+                                  if (form.currentState!.validate()) {
+                                    context.read<LoginBloc>().add(
+                                      CadastrarEvent(
+                                        email: email.text,
+                                        senha: senha.text,
+                                        instituicao: instituicao.text,
+                                        matricula: matricula.text,
+                                        nome: nome.text,
+                                        lembrar: lembrar,
+                                      ),
+                                    );
+                                  }
+                                },
+                        child: const Text(
+                          'Cadastrar-se',
+                          style: TextStyle(height: 5),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],

@@ -34,7 +34,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => LoginBloc(sessaoAtiva))],
+      providers: [
+        BlocProvider(create: (context) => LoginBloc(sessaoAtiva)),
+      ],
       child: MaterialApp(
         title: 'Achados e Perdidos',
         theme: ThemeData(
